@@ -1,0 +1,80 @@
+.menu-card {
+  box-sizing: border-box;
+  /* height: 240px; */
+  /* width: 150px; */
+  border-radius: 10px;
+  box-shadow: 1px 1px 12px 1px rgba(40, 40, 40, 0.2);
+  /* border: 1px solid green; */
+  /* border-left: 10px solid saddlebrown; */
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: white;
+}
+
+.dish-img {
+  width: 100%;
+  height: 180px;
+  /* margin: 1px 10px; */
+  border-radius: 5px;
+}
+
+
+.title {
+  justify-content: center;
+  text-align: center;
+  color: #DD0404;
+  margin-bottom: 5px;
+  /* font-weight: bold; */
+}
+
+.description {
+  justify-content: center;
+  text-align: center;
+  color: #850505 ;
+  margin-top: 10px;  
+  font-family: 'Nunito', sans-serif;
+}
+
+.price {
+  margin-top: 3px;
+  justify-content: center;
+  text-align: center;
+  color: #850505;
+
+}
+
+.quantity {
+  margin-top: 3px;
+  justify-content: center;
+  text-align: center;
+  color:green;
+
+}
+
+.controls {
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.fa-minus {
+  color: #DD0404;
+  margin-right: 15px ;
+  cursor: pointer;
+}
+
+.fa-trash {
+  color: #DD0404;
+  cursor: pointer;
+}
+/* hsl(0, 93%, 27%) */
+
+.fa-plus {
+  color: green;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+Link:hover , a:hover {
+  text-decoration: none;
+}

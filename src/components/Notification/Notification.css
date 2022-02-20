@@ -1,0 +1,61 @@
+.notification {
+  width: 600px;
+  height: 45px;
+  background: var(--primary-bright-orange);
+  border-radius: 10px;
+  border-left: 8px solid var(--primary-bright-green);
+  margin: 4rem auto;
+  padding: 0 0.8rem 0.7rem 0.5rem;
+  transition: all 0.8s ease-in-out;
+  z-index: 1002;
+  position: fixed;
+  top: 30%;
+  left: 30%;
+}
+
+
+
+.notification-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.2rem 0;
+}
+
+.notification p {
+
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.notification .close-button {
+  color: #fff;
+  font-size: 1.0rem;
+  cursor: pointer;
+}
+
+.notification-backdrop {
+  height: 100%;
+  width: 100%;
+   background: rgba(63, 61, 61, 0.692);
+  cursor: pointer;
+  transition: all 1.3s;
+  position: fixed;
+  z-index: 1001;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (max-width: 650px) {
+  .notification {
+    width: 80%;
+    margin: 0 auto;  
+   left: 15%;
+  }
+
+  .notification-content {
+
+    justify-content: space-around;
+  }
+}

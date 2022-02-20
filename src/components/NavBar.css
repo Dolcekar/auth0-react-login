@@ -1,0 +1,10 @@
+.logo {
+  background-image: url("../assets/logo.png");
+  width: 3.125rem;
+  height: 3.125rem;
+  border-radius: 50%;
+}
+
+.nav-item:first-of-type {
+  margin-right: 1rem;
+}

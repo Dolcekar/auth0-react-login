@@ -7,7 +7,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import history from "./utils/history";
 import { getConfig } from "./config";
 
-const onRedirectCallback = (appState) => {
+const onRedirectCallback = appState => {
   history.push(
     appState && appState.returnTo ? appState.returnTo : window.location.pathname
   );
@@ -22,7 +22,7 @@ const providerConfig = {
   clientId: config.clientId,
   ...(config.audience ? { audience: config.audience } : null),
   redirectUri: window.location.origin,
-  onRedirectCallback,
+  onRedirectCallback
 };
 
 ReactDOM.render(

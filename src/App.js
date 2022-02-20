@@ -1,7 +1,6 @@
 import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import { Container } from "reactstrap";
-
 import Loading from "./components/Loading";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
@@ -10,6 +9,7 @@ import Profile from "./views/Profile";
 import ExternalApi from "./views/ExternalApi";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
+import Cart from "./components/Cart/Cart";
 
 // styles
 import "./App.css";
@@ -17,6 +17,17 @@ import "./App.css";
 // fontawesome
 import initFontAwesome from "./utils/initFontAwesome";
 initFontAwesome();
+
+
+//we want our state to look something like this 
+// { cart: {
+//     small: 1,
+//     medium: 2,
+//     large: 0,
+//     xl: 1
+//     cartTotal: 56.00;
+// } }
+//wrap App inside of our global cart context
 
 const App = () => {
   const { isLoading, error } = useAuth0();
@@ -31,15 +42,14 @@ const App = () => {
 
   return (
     <Router history={history}>
-      <div id="app" className="d-flex flex-column h-100">
+      <div id='app' className='d-flex flex-column h-100'>
         <NavBar />
-        <Container className="flex-grow-1 mt-5">
           <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/external-api" component={ExternalApi} />
+            <Route path='/' exact component={Home} />
+            <Route path="/cart" exact component={Cart} />
+            <Route path='/profile' component={Profile} />
+            <Route path='/external-api' component={ExternalApi} />
           </Switch>
-        </Container>
         <Footer />
       </div>
     </Router>
