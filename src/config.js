@@ -8,14 +8,15 @@ export function getConfig() {
   // If this resolves to `null`, the API page changes to show some helpful info about what to do
   // with the audience.
   const audience =
-    process.env.audience &&
-    process.env.audience !== "https://dev-djgc80yi.us.auth0.com/api/v2/"
-      ? process.env.audience
+    process.env.REACT_APP_AUDIENCE &&
+    process.env.REACT_APP_AUDIENCE !==
+      "https://dev-djgc80yi.us.auth0.com/api/v2/"
+      ? process.env.REACT_APP_AUDIENCE
       : null;
 
   return {
-    domain: process.env.domain,
-    clientId: process.env.clientId,
+    domain: process.env.REACT_APP_DOMAIN,
+    clientId: process.env.REACT_APP_CLIENT_ID,
     ...(audience ? { audience } : null)
   };
 }
