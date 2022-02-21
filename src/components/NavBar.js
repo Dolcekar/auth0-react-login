@@ -126,7 +126,7 @@ const NavBar = () => {
                     id='qsSignupBtn'
                     color='primary'
                     block
-                    onClick={() => loginWithRedirect({})}
+                    onClick={() => loginWithRedirect({ action: "signup" })}
                   >
                     Sign Up
                   </Button>
