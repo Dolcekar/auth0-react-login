@@ -1,4 +1,4 @@
-import configJson from "./auth_config.json";
+import "dotenv/config";
 
 export function getConfig() {
   // Configure the audience here. By default, it will take whatever is in the config
@@ -8,13 +8,14 @@ export function getConfig() {
   // If this resolves to `null`, the API page changes to show some helpful info about what to do
   // with the audience.
   const audience =
-    configJson.audience && configJson.audience !== "https://dev-djgc80yi.us.auth0.com/api/v2/"
-      ? configJson.audience
+    process.env.audience &&
+    process.env.audience !== "https://dev-djgc80yi.us.auth0.com/api/v2/"
+      ? process.env.audience
       : null;
 
   return {
-    domain: configJson.domain,
-    clientId: configJson.clientId,
+    domain: process.env.domain,
+    clientId: process.env.clientId,
     ...(audience ? { audience } : null)
   };
 }
