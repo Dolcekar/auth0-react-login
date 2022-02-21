@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import logo from "../assets/logo.png";
 import MenuCard from "../components/MenuCard/MenuCard";
@@ -15,12 +14,10 @@ import {
 import { Notification } from "../components/Notification/Notification";
 
 const Hero = () => {
-  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
   const [cart, setCart] = useState({});
   const [show, setShow] = useState(false);
   const [notificationText, setNotificationText] = useState("");
-  let isVerified;
-  if (user) isVerified = user.email_verified;
 
   const init = async () => {
     try {
