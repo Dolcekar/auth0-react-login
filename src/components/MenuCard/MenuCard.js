@@ -26,7 +26,7 @@ const MenuCard = ({ dish, updateCart, removeDish }) => {
         <div classname='dish-description'>{dish.description}</div>
         <div className='dish-price'>${dish.price.toFixed(2)}</div>
         <button
-          className='btn btn-success'
+          className='btn btn-success mt-2'
           onClick={() => handleCartOperation("increment")}
         >
           Add to cart
