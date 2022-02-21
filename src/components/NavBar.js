@@ -20,7 +20,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import "./NavBar.css";
 
 const NavBar = () => {
-  //console.log(useAuth0());
   const [isOpen, setIsOpen] = useState(false);
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
   const toggle = () => setIsOpen(!isOpen);
