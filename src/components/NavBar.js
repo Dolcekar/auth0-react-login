@@ -17,9 +17,10 @@ import {
   DropdownItem
 } from "reactstrap";
 import { useAuth0 } from "@auth0/auth0-react";
-import "./NavBar.css"
+import "./NavBar.css";
 
 const NavBar = () => {
+  //console.log(useAuth0());
   const [isOpen, setIsOpen] = useState(false);
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
   const toggle = () => setIsOpen(!isOpen);
@@ -55,7 +56,7 @@ const NavBar = () => {
                     id='qsSignupBtn'
                     color='secondary'
                     className='btn-margin'
-                    onClick={() => loginWithRedirect()}
+                    onClick={() => loginWithRedirect({ action: "signup" })}
                   >
                     Sign Up
                   </Button>

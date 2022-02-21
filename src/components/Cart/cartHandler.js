@@ -1,95 +1,79 @@
-import _ from "lodash";
+import pizzaData from "../../utils/pizzaData";
 
-export const addDishToCart = dish => {
-  let cart = { dishes: [] };
-
-  if (typeof window !== "undefined") {
-    if (localStorage.getItem("cart")) {
-      cart = JSON.parse(localStorage.getItem("cart"));
-    }
-
-    cart.dishes.push({ ...dish, count: 1 });
-    const uniqueDishes = _.uniqBy(cart.dishes, "_id");
-    cart.dishes = uniqueDishes;
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }
+export const createCart = () => {
+  if (window.localStorage.getItem("cart")) return;
+  const cart = {};
+  pizzaData.forEach(dish => {
+    cart[dish.name] = 0;
+  });
+  window.localStorage.setItem("cart", JSON.stringify(cart));
 };
 
 export const getCart = () => {
   if (typeof window !== "undefined") {
     if (localStorage.getItem("cart")) {
       const cart = JSON.parse(window.localStorage.getItem("cart"));
-      return cart.dishes;
+      return cart;
     }
 
-    return [];
+    return {};
   }
 
-  return [];
+  return {};
 };
 
 export const getCartTotal = () => {
-  let dishes = [];
-
   if (typeof window !== "undefined") {
     if (localStorage.getItem("cart")) {
       const cart = JSON.parse(window.localStorage.getItem("cart"));
-
-      dishes = cart.dishes;
-
-      let total = _.sumBy(dishes, dish => {
-        return dish.count * dish.price;
+      let totalPrice = 0;
+      pizzaData.forEach(dish => {
+        const quantity = cart[dish.name];
+        totalPrice += dish.price * quantity;
       });
-      console.log(
-        "🚀 ~ file: cartHandler.js ~ line 62 ~ getCartTotal ~ total",
-        total
-      );
-
-      return total;
+      return totalPrice;
     }
+    return 0;
   }
 };
 
 export const getTotalItemsInCart = () => {
-  let cart = {};
-
   if (typeof window !== "undefined") {
+    let cart;
     if (localStorage.getItem("cart")) {
       cart = JSON.parse(window.localStorage.getItem("cart"));
     }
-
-    return cart.dishes ? cart.dishes.length : 0;
+    let totalItems = 0;
+    Object.values(cart).forEach(dishQuantity => {
+      console.log(dishQuantity);
+      totalItems += dishQuantity;
+    });
+    return totalItems;
   }
 
   return 0;
 };
 
-export const updateDishQuantity = dish => {
+export const updateDishQuantity = (dish, action) => {
   if (typeof window !== "undefined") {
     if (localStorage.getItem("cart")) {
       const cart = JSON.parse(window.localStorage.getItem("cart"));
-
-      const updatedDishes = _.map(cart.dishes, item => {
-        if (item._id === dish._id) {
-          item.count = dish.count;
-        }
-        return item;
-      });
-
-      cart.dishes = updatedDishes;
+      if (action === "increment") {
+        cart[dish]++;
+      } else if (action === "decrement") {
+        if (cart[dish] - 1 >= 0) cart[dish]--;
+      }
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   }
 };
 
-export const removeDishFromCart = (id, callback) => {
+export const removeDishFromCart = dish => {
   if (typeof window !== "undefined") {
     if (localStorage.getItem("cart")) {
       const cart = JSON.parse(window.localStorage.getItem("cart"));
-
-      _.remove(cart.dishes, { _id: id });
+      cart[dish] = 0;
       localStorage.setItem("cart", JSON.stringify(cart));
-      callback();
     }
   }
 };

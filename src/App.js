@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Router, Route, Switch } from "react-router-dom";
-import { Container } from "reactstrap";
 import Loading from "./components/Loading";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
@@ -9,7 +8,7 @@ import Profile from "./views/Profile";
 import ExternalApi from "./views/ExternalApi";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
-import Cart from "./components/Cart/Cart";
+import { createCart } from "./components/Cart/cartHandler";
 
 // styles
 import "./App.css";
@@ -18,19 +17,12 @@ import "./App.css";
 import initFontAwesome from "./utils/initFontAwesome";
 initFontAwesome();
 
-
-//we want our state to look something like this 
-// { cart: {
-//     small: 1,
-//     medium: 2,
-//     large: 0,
-//     xl: 1
-//     cartTotal: 56.00;
-// } }
-//wrap App inside of our global cart context
-
 const App = () => {
   const { isLoading, error } = useAuth0();
+
+  useEffect(() => {
+    createCart();
+  }, []);
 
   if (error) {
     return <div>Oops... {error.message}</div>;
@@ -44,12 +36,12 @@ const App = () => {
     <Router history={history}>
       <div id='app' className='d-flex flex-column h-100'>
         <NavBar />
-          <Switch>
-            <Route path='/' exact component={Home} />
-            <Route path="/cart" exact component={Cart} />
-            <Route path='/profile' component={Profile} />
-            <Route path='/external-api' component={ExternalApi} />
-          </Switch>
+        <Switch>
+          <Route path='/' exact component={Home} />
+          {/* <Route path="/cart" exact component={Cart} /> */}
+          <Route path='/profile' component={Profile} />
+          <Route path='/external-api' component={ExternalApi} />
+        </Switch>
         <Footer />
       </div>
     </Router>

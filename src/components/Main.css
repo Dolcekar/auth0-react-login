@@ -23,13 +23,84 @@
   min-height: 80vh;
 }
 
-.text-center {
-  /*background: url("../assets/pizza-background.JPG");*/
-}
-
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   grid-template-rows: repeat(auto-fit, 1fr);
   gap: 16px;
+}
+
+.cart {
+  background: #ddd;
+  overflow: hidden;
+}
+
+.cart-item {
+  width: 100%;
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1rem 1rem 0.875rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cart-item-top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.cart-item-name {
+  font-weight: 600;
+}
+
+.cart-item-price {
+  font-weight: 600;
+}
+
+.cart-item-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-item-quantity-bar {
+  border-radius: 1rem;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  padding: 0.125rem 0.375rem;
+}
+
+.cart-item-quantity {
+  margin: 0 0.5rem;
+}
+
+.cart-item-btn {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  line-height: 1;
+  border: 0;
+  margin: 0;
+  background: transparent;
+}
+
+.cart-item-remove {
+  font-size: 0.75rem;
+  padding: 0.25rem;
+  line-height: 1;
+  height: 1.75rem;
+  margin: 0;
+  border: 0;
+  background: #ddd;
+  color: tomato;
+  border-radius: 0.25rem;
+}
+
+.cart-total {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }

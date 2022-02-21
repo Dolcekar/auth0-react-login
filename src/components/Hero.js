@@ -15,37 +15,37 @@ import {
 import { Notification } from "../components/Notification/Notification";
 
 const Hero = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
-  const [dishes, setDishes] = useState([]);
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+  const [cart, setCart] = useState({});
   const [show, setShow] = useState(false);
   const [notificationText, setNotificationText] = useState("");
-  //const isVerified = user.email_verified;
+  let isVerified;
+  if (user) isVerified = user.email_verified;
 
   const init = async () => {
     try {
-      const items = await getCart();
-      setDishes(items);
+      const cart = await getCart();
+      setCart(cart);
     } catch (error) {
-      console.log("🚀 ~ file: Cart.js ~ line 18 ~ init ~ error", error);
+      console.log(error);
     }
   };
 
   const updateCart = async (dish, action) => {
-    console.log("🚀 ~ file: Cart.js ~ line 28 ~ updateCart ~ dish", dish);
-    await updateDishQuantity(dish);
-    setDishes(getCart());
+    await updateDishQuantity(dish, action);
+    setCart(getCart());
     setNotificationText(
-      action === "increment" ? "ITEM_QTY_INCREASED" : "ITEM_QTY_DECREASED"
+      action === "increment"
+        ? `${dish} added to cart`
+        : `1 ${dish} removed from cart`
     );
     setShow(true);
   };
 
   const removeDish = async dish => {
-    console.log("🚀 ~ file: Cart.js ~ line 33 ~ removeDish ~ dish", dish);
-    await removeDishFromCart(dish._id, () => {
-      setDishes(getCart());
-    });
-    setNotificationText("REMOVE_FROM_CART");
+    await removeDishFromCart(dish);
+    setCart(getCart());
+    setNotificationText(`${dish} removed from cart`);
     setShow(true);
   };
 
@@ -62,50 +62,70 @@ const Hero = () => {
       <Notification show={show} text={notificationText} close={closeHandler} />
     );
 
-  const showCart = () => (
-    <>
-      {dishes.map(dish => (
-        <div className='col-lg-4 col-md-5' key={dish._id}>
-          <MenuCard
-            dish={dish}
-            updateCart={updateCart}
-            removeDish={removeDish}
-          />
-        </div>
-      ))}
-    </>
-  );
-
   const renderCart = () => {
+    const totalItemsInCart = getTotalItemsInCart();
     return (
       <>
         {displayNotification()}
-        <div className='justify-content-center'>
-          <h5>Your Cart contains {getTotalItemsInCart()} dish(es)</h5>
-          <div>
-            <button className='btn btn-primary'>
-              Continue Shopping <strong>&#x27F9;</strong>
+        <div className='py-3 px-1'>
+          <p>
+            Your cart contains {totalItemsInCart} dish
+            {totalItemsInCart === 1 ? "" : "es"}
+          </p>
+          <div className=''>
+            <div className=''>
+              {Object.entries(cart).map((dishArray, i) =>
+                dishArray[1] === 0 ? null : (
+                  <div key={i} className='cart-item'>
+                    <div className='cart-item-top'>
+                      <div className='cart-item-name'>{dishArray[0]}</div>
+                      <div className='cart-item-price'>
+                        $
+                        {pizzaData.find(ele => ele.name === dishArray[0]).price}
+                      </div>
+                    </div>
+                    <div className='cart-item-bottom'>
+                      <div className='cart-item-quantity-bar'>
+                        <button
+                          className='cart-item-btn'
+                          onClick={() => updateCart(dishArray[0], "decrement")}
+                        >
+                          -
+                        </button>
+                        <div className='cart-item-quantity'>{dishArray[1]}</div>
+                        <button
+                          className='cart-item-btn'
+                          onClick={() => updateCart(dishArray[0], "increment")}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button
+                        className='cart-item-remove'
+                        onClick={() => removeDish(dishArray[0])}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+          <h5 className='cart-total'>
+            <span>Total:</span>
+            <span>${getCartTotal().toFixed(2)}</span>
+          </h5>
+          {isAuthenticated ? (
+            <button className='btn btn-success'>Checkout</button>
+          ) : (
+            <button
+              className='btn btn-success'
+              onClick={() => loginWithRedirect()}
+            >
+              Sign in to checkout
             </button>
-          </div>
-        </div>
-        <div className='justify-content-center mt-2'>
-          <div className=''>
-            <div className='row justify-content-start'>{showCart()}</div>
-          </div>
-          <div className=''>
-            <h5 style={{ textDecoration: "underline" }}>
-              Total: <i className='fa fa-inr' />
-              <span style={{ padding: "0 5px" }}>
-                {/* {getCartTotal().toFixed(2)} */}
-              </span>{" "}
-            </h5>
-            <Link to='/signin'>
-              <button className='btn btn-success'>
-                <i className='fa fa-lock' />{" "}
-                <span style={{ padding: "5px 10px" }}>Signin to Checkout</span>
-              </button>
-            </Link>
-          </div>
+          )}
         </div>
       </>
     );
@@ -114,8 +134,10 @@ const Hero = () => {
   return (
     <div className='container mt-4 mb-5'>
       <div className='row'>
-        <div className='col col-md-4'>{renderCart()}</div>
-        <div className='col col-md-8'>
+        <div className='col-12 order-2 col-md-4 order-md-1 cart'>
+          {renderCart()}
+        </div>
+        <div className='col-12 order-1 col-md-8 order-md-2'>
           <div className='hero-wrapper'>
             <img className='mb-3 ' src={logo} alt='Pizza 42 logo' width='200' />
             <h1 className='mb-4'>PIZZA 42</h1>
@@ -124,10 +146,10 @@ const Hero = () => {
           </div>
           <div className='menu-wrapper'>
             <h2>Our Menu</h2>
-            <div className="menu-grid">
-              {pizzaData.map(dish => (
+            <div className='menu-grid'>
+              {pizzaData.map((dish, i) => (
                 <MenuCard
-                  key={dish.name}
+                  key={i}
                   dish={dish}
                   updateCart={updateCart}
                   removeDish={removeDish}
@@ -140,6 +162,5 @@ const Hero = () => {
     </div>
   );
 };
-
 
 export default Hero;
