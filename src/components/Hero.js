@@ -22,7 +22,6 @@ const Hero = () => {
   } = useAuth0();
 
   const [token, setToken] = useState(null);
-  const [userMetadata, setUserMetadata] = useState(null);
   const [cart, setCart] = useState({});
   const [show, setShow] = useState(false);
   const [notificationText, setNotificationText] = useState("");
@@ -57,7 +56,7 @@ const Hero = () => {
     };
 
     getToken();
-  }, [getAccessTokenSilently, user && user.sub]);
+  }, [getAccessTokenSilently, user]);
 
   const checkout = async () => {
     try {
