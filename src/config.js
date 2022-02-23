@@ -1,5 +1,5 @@
 import "dotenv/config";
-import config from "./auth_config.json";
+// import config from "./auth_config.json";
 
 export function getConfig() {
   // Configure the audience here. By default, it will take whatever is in the config
@@ -13,11 +13,14 @@ export function getConfig() {
     process.env.REACT_APP_AUDIENCE !==
       "https://dev-djgc80yi.us.auth0.com/api/v2/"
       ? process.env.REACT_APP_AUDIENCE
-      : config.audience;
+      : null;
+  // : config.audience;
 
   return {
-    domain: process.env.REACT_APP_DOMAIN || config.domain,
-    clientId: process.env.REACT_APP_CLIENT_ID || config.clientId,
-    ...(audience ? { audience } : null)
+    domain: process.env.REACT_APP_DOMAIN,
+    // || config.domain,
+    clientId: process.env.REACT_APP_CLIENT_ID
+    // || config.clientId,
+    // ...(audience ? { audience } : null)
   };
 }
