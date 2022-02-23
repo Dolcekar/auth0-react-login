@@ -27,6 +27,7 @@ const providerConfig = {
   initialScreen: isSignup ? "signup" : "login"
 };
 
+console.log(providerConfig);
 ReactDOM.render(
   <Auth0Provider {...providerConfig}>
     <App />

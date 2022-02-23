@@ -14,10 +14,75 @@ import {
 import { Notification } from "../components/Notification/Notification";
 
 const Hero = () => {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const {
+    user,
+    isAuthenticated,
+    loginWithRedirect,
+    getAccessTokenSilently
+  } = useAuth0();
+
+  const [token, setToken] = useState(null);
+  const [userMetadata, setUserMetadata] = useState(null);
   const [cart, setCart] = useState({});
   const [show, setShow] = useState(false);
   const [notificationText, setNotificationText] = useState("");
+
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const accessToken = await getAccessTokenSilently({
+          scope:
+            "read:users read:user_idp_tokens read:current_user update:current_user_metadata"
+        });
+
+        setToken(accessToken);
+
+        const metadataResponse = await fetch(
+          `https://dev-djgc80yi.us.auth0.com/api/v2/users/` + user.sub,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          }
+        );
+
+        const { user_metadata } = await metadataResponse.json();
+
+        if (user_metadata) {
+          console.log("History:", user_metadata);
+        }
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
+
+    getToken();
+  }, [getAccessTokenSilently, user && user.sub]);
+
+  const checkout = async () => {
+    try {
+      await fetch(
+        "https://dev-djgc80yi.us.auth0.com/api/v2/users/" + user.sub,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            user_metadata: {
+              [new Date().getTime()]: {
+                date: new Date().toISOString(),
+                products: cart
+              }
+            }
+          })
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const init = async () => {
     try {
@@ -114,7 +179,9 @@ const Hero = () => {
             <span>${getCartTotal().toFixed(2)}</span>
           </h5>
           {isAuthenticated ? (
-            <button className='btn btn-success'>Checkout</button>
+            <button className='btn btn-success' onClick={() => checkout()}>
+              Checkout
+            </button>
           ) : (
             <button
               className='btn btn-success'

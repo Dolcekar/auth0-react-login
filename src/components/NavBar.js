@@ -48,6 +48,19 @@ const NavBar = () => {
                 </NavLink>
               </NavItem>
             </Nav>
+
+            {isAuthenticated && (
+              <NavItem>
+                <NavLink
+                  tag={RouterNavLink}
+                  to='/external-api'
+                  exact
+                  activeClassName='router-link-exact-active'
+                >
+                  External API
+                </NavLink>
+              </NavItem>
+            )}
             <Nav className='d-none d-md-flex' navbar>
               {!isAuthenticated && (
                 <NavItem>
@@ -67,7 +80,12 @@ const NavBar = () => {
                     id='qsLoginBtn'
                     color='primary'
                     className='btn-margin'
-                    onClick={() => loginWithRedirect()}
+                    onClick={() =>
+                      loginWithRedirect({
+                        scope:
+                          "read:users read:user_idp_tokens read:current_user update:current_user_metadata"
+                      })
+                    }
                   >
                     Log in
                   </Button>
@@ -111,7 +129,12 @@ const NavBar = () => {
                     id='qsLoginBtn'
                     color='primary'
                     block
-                    onClick={() => loginWithRedirect({})}
+                    onClick={() =>
+                      loginWithRedirect({
+                        scope:
+                          "read:users read:user_idp_tokens read:current_user update:current_user_metadata"
+                      })
+                    }
                   >
                     Log in
                   </Button>
