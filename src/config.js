@@ -8,12 +8,12 @@ export function getConfig() {
   // don't have an API).
   // If this resolves to `null`, the API page changes to show some helpful info about what to do
   // with the audience.
-  const audience =
-    process.env.REACT_APP_AUDIENCE &&
-    process.env.REACT_APP_AUDIENCE !==
-      "https://dev-djgc80yi.us.auth0.com/api/v2/"
-      ? process.env.REACT_APP_AUDIENCE
-      : null;
+  //const audience =
+  //  process.env.REACT_APP_AUDIENCE &&
+  //  process.env.REACT_APP_AUDIENCE !==
+  //    "https://dev-djgc80yi.us.auth0.com/api/v2/"
+  //    ? process.env.REACT_APP_AUDIENCE
+  //    : null;
   //: config.audience;
 
   return {
@@ -21,6 +21,6 @@ export function getConfig() {
     // || config.domain,
     clientId: process.env.REACT_APP_CLIENT_ID,
     // || config.clientId,
-    ...(audience ? { audience } : null)
+    audience: process.env.REACT_APP_AUDIENCE
   };
 }
