@@ -6,7 +6,10 @@ import { getConfig } from "../config";
 import Loading from "../components/Loading";
 
 export const ExternalApiComponent = () => {
-  const { domain, audience } = getConfig();
+  const {
+    apiOrigin = "https://pizza-for-auth0.netlify.app",
+    audience
+  } = getConfig();
 
   const [state, setState] = useState({
     showResult: false,
@@ -58,7 +61,7 @@ export const ExternalApiComponent = () => {
     try {
       const token = await getAccessTokenSilently();
 
-      const response = await fetch(`https://${domain}/api/external`, {
+      const response = await fetch(`${apiOrigin}/api/external`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

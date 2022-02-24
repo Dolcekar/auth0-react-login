@@ -68,7 +68,13 @@ const NavBar = () => {
                     id='qsSignupBtn'
                     color='secondary'
                     className='btn-margin'
-                    onClick={() => loginWithRedirect({ action: "signup" })}
+                    onClick={() =>
+                      loginWithRedirect({
+                        action: "signup",
+                        scope:
+                          "read:users read:user_idp_tokens read:current_user update:current_user_metadata"
+                      })
+                    }
                   >
                     Sign Up
                   </Button>
@@ -149,7 +155,13 @@ const NavBar = () => {
                     id='qsSignupBtn'
                     color='primary'
                     block
-                    onClick={() => loginWithRedirect({ action: "signup" })}
+                    onClick={() =>
+                      loginWithRedirect({
+                        action: "signup",
+                        scope:
+                          "read:users read:user_idp_tokens read:current_user update:current_user_metadata"
+                      })
+                    }
                   >
                     Sign Up
                   </Button>
