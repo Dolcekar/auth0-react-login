@@ -177,7 +177,7 @@ const Hero = () => {
             <span>Total:</span>
             <span>${getCartTotal().toFixed(2)}</span>
           </h5>
-          {isAuthenticated ? (
+          {isAuthenticated && user.email_verified ? (
             <button className='btn btn-success' onClick={() => checkout()}>
               Checkout
             </button>
@@ -186,7 +186,9 @@ const Hero = () => {
               className='btn btn-success'
               onClick={() => loginWithRedirect()}
             >
-              Sign in to checkout
+              {user && !user.email_verified
+                ? "Verify your email"
+                : "Sign in to checkout"}
             </button>
           )}
         </div>
